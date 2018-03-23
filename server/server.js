@@ -27,6 +27,26 @@ app.get('/api/test', (req, res)=>{
     res.status(200).send('Hit me')
 })
 
+/// Authorization Endpoints
+// GET - /api/auth/login - Invokes the authenticate method on passport.
+// GET - /api/auth/setUser - Sets the user information on the session.
+// GET - /api/auth/authenticated - Checks for the user object on session.
+// POST - /api/auth/logout - Destroys the session and sends a status of 200.
+
+/// Friend Endpoints
+// GET - /api/friend/list
+// POST - /api/friend/add
+// POST - /api/friend/remove 
+
+/// User Endpoints
+// PATCH - /api/user/patch/:id
+// GET - /api/user/list  // Returns a list of 24 users
+// GET - /api/user/search  // Return all users that meet the search criteria.
+
+/// Recommended Endpoints
+// POST - /api/recommended
+// POST - /api/recommended/add
+
 
 // Launch Server
 app.listen(SERVER_PORT, () => (console.log(`Simmin on port: ${SERVER_PORT}`)))
