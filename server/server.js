@@ -83,8 +83,7 @@ app.get('/auth/me', (req, res) => {
         res.status(200).send(req.user)
     }
 })
-// when login out if  you hit back chrome has cached your page. How do you stop?
-// prevent browser from caching previos page.
+
 app.get('/logout', (req, res)=>{
     req.logout();
     res.redirect('http://localhost:3000/')
@@ -94,7 +93,7 @@ app.get('/logout', (req, res)=>{
 
 // Endpoint
 app.get('/api/test', (req, res)=>{
-    res.status(200).send('Hit me')
+    res.status(200).send('Hits')
 })
 
 /// Authorization Endpoints
