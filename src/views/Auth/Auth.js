@@ -6,7 +6,9 @@ export default class Auth extends Component {
         return (
             <div className='Auth'>
                 Auth View
-                {/* <a href={process.env.REACT_APP_LOGIN}><button>Login</button></a> */}
+                {/* find out why my react app login is not working */}
+                {/* <a href={process.env.REACT_APP_LOGIN}> Login</a> */}
+                <a href={'http://localhost:3006/auth'}><button>Login</button></a>
             </div>
         )
     }

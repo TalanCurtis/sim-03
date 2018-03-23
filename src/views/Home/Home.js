@@ -6,6 +6,8 @@ export default class Home extends Component {
         return (
             <div className='Home'>
                 Home View
+                {/* {JSON.stringify(this.props.userData, null, 2)} */}
+                {JSON.stringify({name:'john', age:44})}
             </div>
         )
     }
