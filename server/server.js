@@ -23,7 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Database Connection
-massive(CONNECTION_STRING).then(db => {app.set('db', db)})
+massive(CONNECTION_STRING).then(db => {console.log('Database up'); app.set('db', db)})
 
 //////////////////////
 ///// AUTH 0 /////////
@@ -45,11 +45,13 @@ passport.use(new Auth0Strategy({
 
     db.find_user([sub]).then(dbResponse => {
         if (dbResponse[0]) {
-            done(null, dbResponse[0].auth_id)
+            console.log('find_user: ',dbResponse[0])
+            done(null, dbResponse[0].id)
         } else {
             // creates user and sends it back
             db.create_user([name, picture, sub]).then(dbResponse => {
-                done(null, dbResponse[0].auth_id)
+                console.log('create_user: ',dbResponse[0])
+                done(null, dbResponse[0].id)
             })
         }
     });
@@ -65,6 +67,7 @@ passport.serializeUser((id, done) => {
 passport.deserializeUser((id, done) => {
     const db = app.get('db');
     db.find_logged_in_user([id]).then(dbResponse => {
+        console.log('deserializeUser: ',dbResponse[0])
         done(null, dbResponse[0])
     })
 });
@@ -78,15 +81,18 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 ///// put this check on component did mount to see if user still valaid
 app.get('/auth/me', (req, res) => {
     if (!req.user) {
-        res.status(404).send('user not loged in')
+        console.log('auth me No User: ', req.user)
+        res.status(401).send('user not loged in')
     } else {
+        console.log('auth me User: ', req.user)
         res.status(200).send(req.user)
     }
 })
 
 app.get('/logout', (req, res)=>{
     req.logout();
-    res.redirect('http://localhost:3000/')
+    res.status(200).send('logged out')
+    // res.redirect('http://localhost:3000/')
 } )
 //////////////////////
 //////////////////////
