@@ -82,7 +82,7 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 app.get('/auth/me', (req, res) => {
     if (!req.user) {
         console.log('auth me No User: ', req.user)
-        res.status(401).send('user not loged in')
+        res.status(401).send('not logged in')
     } else {
         console.log('auth me User: ', req.user)
         res.status(200).send(req.user)
@@ -91,7 +91,7 @@ app.get('/auth/me', (req, res) => {
 
 app.get('/logout', (req, res)=>{
     req.logout();
-    res.status(200).send('logged out')
+    res.status(200).send('log out')
     // res.redirect('http://localhost:3000/')
 } )
 //////////////////////
