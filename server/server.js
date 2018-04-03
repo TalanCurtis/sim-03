@@ -5,6 +5,7 @@ const passport = require('passport')
 const Auth0Strategy = require('passport-auth0')
 const massive = require('massive')
 const bodyParser=require('body-parser');
+const checkForSession=('./middleWare/checkForSession')
 
 const app = express()
 
@@ -19,6 +20,21 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+//// Auth
+/// switch req.session.user <> req.user///////////
+/////////////////////////////////////////////////
+// app.use((req, res, next) => {
+//     if (!req.session.user) {
+//         req.session.user = {
+//             id: 1,
+//             username: "userName"
+//         }
+//     }
+//     next()
+// })
+/////////////////////////////////////////////////
+// app.use(checkForSession)
+////////
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -110,6 +126,14 @@ app.get('/api/test', (req, res)=>{
 
 /// Friend Endpoints
 // GET - /api/friend/list
+app.get('/api/friend/list', (req, res)=>{
+    const db = app.get('db');
+    db.get_friends_list([req.user.id]).then(dbResponse => {
+        res.status(200).send(dbResponse)
+    })
+    // console.log('user id',req.user.id)
+    // res.status(200).send('cools')
+})
 // POST - /api/friend/add
 // POST - /api/friend/remove 
 

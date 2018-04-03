@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Header.css';
 import axios from 'axios';
-import { withRouter } from 'react-router-dom';
+import {  Link, withRouter } from 'react-router-dom';
 
  class Header extends Component {
 
@@ -26,9 +26,11 @@ import { withRouter } from 'react-router-dom';
     render() {
         return (
             <div className='Header'>
-                Header Comp
+                {/* Header Comp
                 <button onClick={()=>{this.handleHome()}}>Home</button>
-                <button onClick={()=>{this.handleSearch()}}>Search</button>
+                <button onClick={()=>{this.handleSearch()}}>Search</button> */}
+                <Link to='/home'>Home</Link>
+                <Link to='/search'>Search</Link>
                 <button onClick={()=>{this.handleLogout()}}>Logout</button>
             </div>
         )

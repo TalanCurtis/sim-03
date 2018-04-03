@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Home.css';
 import Header from '../../components/Header/Header';
+import UserCard from '../../components/UserCard/UserCard';
 
 export default class Home extends Component {
 
@@ -8,7 +9,7 @@ export default class Home extends Component {
         return (
             <div className='Home'>
                 <Header />
-                Home View
+                <UserCard />
             </div>
         )
     }
