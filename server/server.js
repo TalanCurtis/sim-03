@@ -5,7 +5,7 @@ const passport = require('passport')
 const Auth0Strategy = require('passport-auth0')
 const massive = require('massive')
 const bodyParser=require('body-parser');
-const checkForSession=('./middleWare/checkForSession')
+const checkForSession = require('./middleware/checkForSession')
 
 const app = express()
 
@@ -20,20 +20,10 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-//// Auth
-/// switch req.session.user <> req.user///////////
-/////////////////////////////////////////////////
-// app.use((req, res, next) => {
-//     if (!req.session.user) {
-//         req.session.user = {
-//             id: 1,
-//             username: "userName"
-//         }
-//     }
-//     next()
-// })
-/////////////////////////////////////////////////
-// app.use(checkForSession)
+// auth 0 override
+// switch req.user to req.session.user
+app.use(checkForSession)
+
 ////////
 app.use(passport.initialize());
 app.use(passport.session());
@@ -96,12 +86,12 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 //////// This enpoint checks to see if user is still loged in
 ///// put this check on component did mount to see if user still valaid
 app.get('/auth/me', (req, res) => {
-    if (!req.user) {
-        console.log('auth me No User: ', req.user)
+    if (!req.session.user) {
+        console.log('auth me No User: ', req.session.user)
         res.status(401).send('not logged in')
     } else {
-        console.log('auth me User: ', req.user)
-        res.status(200).send(req.user)
+        console.log('auth me User: ', req.session.user)
+        res.status(200).send(req.session.user)
     }
 })
 
@@ -128,13 +118,23 @@ app.get('/api/test', (req, res)=>{
 // GET - /api/friend/list
 app.get('/api/friend/list', (req, res)=>{
     const db = app.get('db');
-    db.get_friends_list([req.user.id]).then(dbResponse => {
+    db.get_friends_list([req.session.user.id]).then(dbResponse => {
         res.status(200).send(dbResponse)
     })
-    // console.log('user id',req.user.id)
-    // res.status(200).send('cools')
 })
 // POST - /api/friend/add
+app.post('/api/friend/add', (req, res)=>{
+    console.log('req: ', req.body.id)
+    console.log('req user: ', req.session.user.id)
+
+    const db = app.get('db');
+    db.create_friend([req.session.user.id, req.body.id]).then(dbResponse => {
+        db.get_friends_list([req.session.user.id]).then(dbResponse => {
+            res.status(200).send(dbResponse)
+        })
+        // res.status(200).send('added friend')
+    })
+})
 // POST - /api/friend/remove 
 
 /// User Endpoints

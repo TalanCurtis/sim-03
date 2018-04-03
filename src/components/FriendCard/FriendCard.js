@@ -10,6 +10,7 @@ export default function FriendCard(props) {
             <h3>Age: {props.user.age}</h3>
             <h3>Eyes: {props.user.eye_color}</h3>
             <h3>Hair: {props.user.hair_color}</h3>
+            <button onClick={props.handleAddFriend}>Add Friend</button>
         </div>
     )
 }

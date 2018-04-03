@@ -11,23 +11,31 @@ export default class Search extends Component {
         this.state={
             friendsList:[]
         }
+        this.handleAddFriend = this.handleAddFriend.bind(this)
     }
     componentDidMount(){
         axios.get('/api/friend/list').then(res=>{
-            console.log('made it back', res.data)
+            console.log('componentDidMount finished', res.data)
+            this.setState({friendsList:res.data})
+        })
+    }
+    handleAddFriend(user_id){
+        console.log('add Friend', user_id)
+        axios.post('/api/friend/add', {id: user_id}).then(res=>{
+            console.log('handleAddFriend finished', res.data)
             this.setState({friendsList:res.data})
         })
     }
     render() {
         const friendsList = this.state.friendsList.map((x,i)=>{return(
-            <FriendCard user={x} />
+            <FriendCard key={i} user={x} handleAddFriend={()=>this.handleAddFriend(x.id)}/>
         )})
         return (
             <div className='Search'>
                 <Header />
-                <list className='wrap'>
+                <div className='wrap'>
                     {friendsList}
-                </list>
+                </div>
             </div>
         )
     }
